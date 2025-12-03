@@ -203,6 +203,17 @@
         <script>
             let device_info_id = null;
             let encrypted_card = null;
+            /*  Scheme to satisfy:
+                eci_flag: z.string().min(1),
+                enrolled: z.string().min(1),
+                cavv: z.string().min(1),
+                pares_status: z.string().min(1),
+                threeds_version: z.string().min(1),
+                ds_transaction_id: z.string().min(1),
+                signature_verification: z.string().min(1),
+                error_desc: z.string(),
+                error_no: z.string(),
+            */
             let threeds_auth_value = {};
             const CHECKOUT_ID = "<%= checkout_id %>"
             const VF_PUBLIC_KEY = "<%= vf_public_key %>";
