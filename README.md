@@ -10,4 +10,14 @@ This project is an integration example of the Verifone Greenbox (GBX) eCommerce 
 - [x] Payment initiation with the CAVV returned by 3-D Secure process
 - [ ] Client-side error handling of server and Cardinal responses
 
+## If you need integration assistance...
+
+### ...and are integrating for the Greenbox-EMEA -> Iceland environment...
+
+...then direct your inquiry to [verifone@verifone.is](mailto:verifone@verifone.is) and the helpdesk will forward your query to the CE team.
+
+### For all other integrators...
+
+...you should find the regional [Verifone website](https://verifone.com/global) most closely matching your own country and/or language and locate the most appropriate contact.
+
 Copyright (c) 2025 Kría Elínarbur <kria.elinarbur@verifone.com>
