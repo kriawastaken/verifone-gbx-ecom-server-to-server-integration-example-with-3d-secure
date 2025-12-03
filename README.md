@@ -20,4 +20,10 @@ This project is an integration example of the Verifone Greenbox (GBX) eCommerce 
 
 ...you should find the regional [Verifone website](https://verifone.com/global) most closely matching your own country and/or language and locate the most appropriate contact.
 
+## License/Disclaimer
+
 Copyright (c) 2025 Kría Elínarbur <kria.elinarbur@verifone.com>
+
+> The software contained in this repository ("the Software") is provided free of charge to whomever obtains a copy of it. The Software is intellectual property of Kría Elínarbur, an employee of Verifone Iceland at time of writing, and NOT officially provided by Verifone. Verifone neither endorses the Software nor warrants the Software's functionality and cannot be held liable for any damages resulting from use of the Software. The Software SHOULD NOT be used unmodified in any production application.
+
+> THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
