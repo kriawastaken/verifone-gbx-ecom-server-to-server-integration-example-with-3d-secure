@@ -1,0 +1,28 @@
+import type { Verifone_Config } from "@/lib/verifone";
+
+const CONFIG = {
+    // https://verifone.cloud/docs/online-payments/checkout/card-encryption-verifonejs#integration-steps
+    verifone_js_url: "https://emea.jsclient.verifone.cloud/verifone.js",
+    // https://verifone.cloud/docs/online-payments/api-integration/server-server-payments-3d-secure-setup-guide/server-server#step-1__003a-__0028client__002dside__0029-set-up-your-front__002dend__202f
+    // prettier-ignore
+    songbird_js_url: "https://songbird.cardinalcommerce.com/edge/v1/songbird.js",
+    api_uri: "https://emea.gsc.verifone.cloud",
+
+    user_id: "",
+    api_key: "",
+    org_id: "",
+    ppc_id: "",
+    contract_currency: "ISK",
+    threeds_contract_id: "",
+    key_alias: "",
+    token_scope_id: "",
+    // prettier-ignore
+    public_key: "",
+};
+
+export const VERIFONE_CONFIG = {
+    ...CONFIG,
+    basic_token: Buffer.from(`${CONFIG.user_id}:${CONFIG.api_key}`).toString(
+        "base64",
+    ),
+} satisfies Verifone_Config;

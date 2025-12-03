@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "IBM Plex Sans", sans-serif;
+}
+
+body {
+    background-image: url("/public/static/img/gissur-o-steinarsson--sydstasula-snjor-vetur.jpg");
+    background-position: top;
+    background-size: cover;
+}
+
+.throbber--base {
+    z-index: -999;
+    opacity: 0;
+}
+
+.throbber--active {
+    z-index: 999 !important;
+    opacity: 1 !important;
+}

@@ -1,0 +1,37 @@
+{
+    "name": "nodejs_expressjs_server_to_server_gbx_ecommerce_integration_demo",
+    "version": "1.0.0",
+    "description": "Integration demo in Node.js with Express.js of Verifone Server-to-Server eCommerce",
+    "main": "./.build/server.js",
+    "scripts": {
+        "start": "nodemon --exec \"ts-node -r tsconfig-paths/register\" src/server.ts",
+        "tw": "npx @tailwindcss/cli -i ./static/css/tw.css -o ./static/css/tw.min.css --watch",
+        "dev": "concurrently \"npm:start\" \"npm:tw\"",
+        "build": "tsc && copyfiles \"views/**/*\" \"static/**/*\" \".build\"",
+        "serve": "TS_NODE_BASEURL=./.build node -r tsconfig-paths/register .build/src/server.js",
+        "serve-nt": "set TS_NODE_BASEURL=./.build && node -r tsconfig-paths/register .build/src/server.js"
+    },
+    "keywords": [],
+    "author": "Kría Elínarbur <kria.elinarbur@verifone.com>",
+    "license": "UNLICENSED",
+    "packageManager": "pnpm@10.10.0",
+    "dependencies": {
+        "@tailwindcss/cli": "^4.1.13",
+        "concurrently": "^9.2.1",
+        "ejs": "^3.1.10",
+        "express": "^5.1.0",
+        "tailwindcss": "^4.1.13",
+        "zod": "^4.1.13"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.3",
+        "@types/node": "^24.5.2",
+        "copyfiles": "^2.4.1",
+        "nodemon": "^3.1.10",
+        "prettier": "^3.6.2",
+        "prettier-plugin-tailwindcss": "^0.6.14",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.9.2"
+    }
+}

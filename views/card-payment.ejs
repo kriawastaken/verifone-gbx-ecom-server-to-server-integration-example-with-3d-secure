@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" class="logon h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title> </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/public/static/css/tw.min.css"
+        />
+    </head>
+    <body class="min-h-full w-full max-w-xl mx-auto p-12">
+        <main class="flex w-full flex-col gap-8 bg-cyan-50 p-12 min-h-full shadow-sm">
+            <div>
+                <h1 class="text-2xl">Verifone Server-to-Server eCommerce innleiðingardæmi</h1>
+
+                <p class="mt-8 text-sm leading-6 text-gray-800">
+                    Hér dæmi um innleiðingu á server-to-server checkout flæði með Verifone
+                    Greenbox greiðslugáttinni sem tengist m.a. Færsluhirðingu Landsbankans.
+                </p>
+
+                <p class="mt-4 text-sm leading-6 text-gray-800">
+                    Fyrst er upplýsingum um korthafa safnað til að framkvæma 3-D Secure
+                    uppflettingu, svo eru kortaupplýsingar dulkóðaðar, og loks kall sent
+                    á miðlarann til að framkvæma greiðsluna.
+                </p>
+            </div>
+
+            <form id="checkout_form" method="post" class="flex flex-col gap-4">
+                <% if (error) { %>
+                <div class="bg-red-500 p-2.5 shadow-xs" id="error_msg">
+                    <p class="text-sm leading-6 text-white">
+                        <%= error %>
+                    </p>
+                </div>
+                <% } %>
+
+                <div>
+                    <label class="mb-1 block text-sm leading-6 text-gray-800"
+                        >Fullt nafn korthafa
+                        <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="cardholder_name"
+                        name="Cardholder_Name"
+                        type="text"
+                        placeholder="Jón Jónsson"
+                        class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm uppercase shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                    />
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm leading-6 text-gray-800"
+                        >Tölvupóstfang korthafa
+                        <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="cardholder_email"
+                        name="Cardholder_Email"
+                        type="email"
+                        placeholder="jon@jonsson.is"
+                        class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                    />
+                </div>
+
+                <div class="flex gap-4 items-center">
+
+                    <div class="w-1/2">
+                        <label class="mb-1 block text-sm leading-6 text-gray-800"
+                            >Heimilsfang korthafa
+                            <span class="text-red-500">*</span></label
+                        >
+                        <input
+                            id="cardholder_address_1"
+                            name="Cardholder_Address_1"
+                            type="text"
+                            placeholder="Hlíðasmára 12"
+                            class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                        />
+                    </div>
+
+                    <div class="w-1/2">
+                        <label class="mb-1 block text-sm leading-6 text-gray-800"
+                            >Búsetuborg korthafa
+                            <span class="text-red-500">*</span></label
+                        >
+                        <input
+                            id="cardholder_locality"
+                            name="Cardholder_Locality"
+                            type="text"
+                            placeholder="Kópavogur"
+                            class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                        />
+                    </div>
+
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm leading-6 text-gray-800"
+                        >Búsetuland korthafa
+                        <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="cardholder_country"
+                        type="text"
+                        placeholder="IS"
+                        value="<%= country %>"
+                        disabled
+                        class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                    />
+
+                    <input type="hidden" name="Cardholder_Country" value="<%= country %>" />
+                </div>
+
+                <div class="pt-4">
+                    <label class="mb-1 block text-sm leading-6 text-gray-800"
+                        >Kortanúmer
+                        <span class="text-red-500">*</span></label
+                    >
+                    <input
+                        id="cardholder_pan"
+                        type="text"
+                        placeholder="XXXX XXXX XXXX XXXX"
+                        class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                        data-cardinal-field="AccountNumber"
+                    />
+                </div>
+
+                <div class="flex gap-4">
+
+                    <div class="w-1/2">
+                        <label class="mb-1 block text-sm leading-6 text-gray-800"
+                            >Rennur út
+                            <span class="text-red-500">*</span></label
+                        >
+                        <input
+                            id="cardholder_pa_expiry"
+                            type="text"
+                            placeholder="XX/XX"
+                            class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                        />
+                    </div>
+
+                    <div class="w-1/2">
+                        <label class="mb-1 block text-sm leading-6 text-gray-800"
+                            >Öryggistala
+                            <span class="text-red-500">*</span></label
+                        >
+                        <input
+                            id="cardholder_pa_cvv"
+                            type="text"
+                            placeholder="XXX"
+                            class="block h-[42px] w-full border border-gray-300/50 bg-white p-2.5 text-sm shadow-xs transition-colors duration-150 focus:outline-none focus-visible:border-cyan-500"
+                            maxlength="4"
+                        />
+                    </div>
+
+                </div>
+
+                <div class="pt-4">
+                    <button
+                        id="payment_button"
+                        type="button"
+                        class="block h-[42px] w-full cursor-pointer border border-cyan-500 bg-cyan-500 p-2.5 text-sm shadow-xs transition-colors duration-150 hover:border-cyan-500/80 hover:bg-cyan-500/80 focus:outline-none focus-visible:bg-cyan-500/80 relative"
+                    >
+                        Greiða
+                        
+                        <div id="payment_throbber" class="bg-white/80 absolute top-0 left-0 h-full w-full grid place-items-center throbber--base">
+                            <img src="/public/static/img/throbber.gif" class="h-5 w-5" />
+                        </div>
+                    </button>
+                </div>
+            </form>
+
+            <div class="flex flex-grow items-end gap-4">
+                <a
+                    href="https://verifone.is/"
+                    target="_blank"
+                    class="text-sm text-gray-800 underline decoration-dotted transition duration-200 hover:bg-cyan-500/10"
+                    >Verifone á Íslandi</a
+                >
+
+                <a
+                    href="https://verifone.cloud/docs/online-payments/api-integration/server-server-payments-3d-secure-setup-guide/server-server"
+                    target="_blank"
+                    class="text-sm text-gray-800 underline decoration-dotted transition duration-200 hover:bg-cyan-500/10"
+                    >Skjölun</a
+                >
+            </div>
+        </main>
+
+        <script src="/public/static/js/browserclientutils.js"></script>
+        <% for (const script of scripts) { %>
+        <script src="<%= script %>"></script>
+        <% } %>
+        <script>
+            let device_info_id = null;
+            let encrypted_card = null;
+            let threeds_auth_value = {};
+            const CHECKOUT_ID = "<%= checkout_id %>"
+            const VF_PUBLIC_KEY = "<%= vf_public_key %>";
+            const THREEDS_JWT = "<%= vf_threeds_jwt %>";
+
+            if (typeof verifone === "undefined") {
+                alert('ERROR: `verifone` not defined in window!');
+
+                throw new Error('`verifone` is not defined in window!');
+            }
+
+            const set_error = (msg) => {
+                alert('Error: ' + msg);
+            }
+
+            const clear_error = () => {
+                if (typeof error_msg !== "undefined") {
+                    error_msg.style.display = "none";
+                }
+            };
+
+            const start_loading = () => {
+                payment_throbber.classList.add('throbber--active');
+            }
+
+            const stop_loading = () => {
+                payment_throbber.classList.remove('throbber--active');
+            }
+
+            cardholder_pan.addEventListener("input", (e) => {
+                if (e.currentTarget.value.length < 1) {
+                    return;
+                }
+
+                e.currentTarget.value = format_card_number(e.currentTarget.value);
+            });
+
+            cardholder_pa_expiry.addEventListener('input', (e) => {
+                e.currentTarget.value = format_card_expiry_date(e.currentTarget.value);
+            });
+
+            const initiate_payment = async () => {
+                let payment_res;
+                try {
+                    payment_res = await fetch('/Payment/SecuredCard', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cardholder_name: cardholder_name.value,
+                            cardholder_email: cardholder_email.value,
+                            cardholder_address_1: cardholder_address_1.value,
+                            cardholder_locality: cardholder_locality.value,
+                            cardholder_country: cardholder_country.value,
+                            encrypted_card,
+                            merchant_reference: CHECKOUT_ID,
+                            ...threeds_auth_value
+                        })
+                    })
+                } catch (e) {
+                    stop_loading();
+                    console.error('Error whilst sending payment request to server:', e);
+                    return set_error('Error while sending payment request to server, check console...');
+                }
+
+                let payment_json;
+                try {
+                    payment_json = await payment_res.json();
+                } catch (e) {
+                    stop_loading();
+                    console.error('Error whilst JSON stringifying server payment response:', e);
+                    return set_error('Error whilst JSON stringifying server payment response, check console...');
+                }
+
+                if (payment_json?.error) {
+                    stop_loading();
+                    console.error('Error returned by server (' + payment_json.error.code + '):', e);
+                    return set_error(payment_json.error.message);
+                }
+
+                if (payment_json?.success) {
+                    stop_loading();
+                    return alert('Successful response from server: ' + payment_json.success.code);
+                }
+
+                stop_loading();
+                console.error('Unknown or unhandleable response returned by server: ' + payment_json);
+                set_error('Server returned an unknown (unhandleable) response, check console...');
+            }
+
+            payment_button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                start_loading();
+
+                if (!device_info_id) {
+                    stop_loading();
+                    return set_error('Error: Cardinal setup has not completed yet...');
+                }
+
+                const [expiry_mo, expiry_yr] = full_strip(cardholder_pa_expiry.value).split('/');
+                encrypted_card = await verifone.encryptCard(
+                    {
+                        cardNumber: full_strip(cardholder_pan.value),
+                        expiryMonth: expiry_mo,
+                        expiryYear: expiry_yr,
+                        cvv: full_strip(cardholder_pa_cvv.value)
+                    },
+                    VF_PUBLIC_KEY
+                );
+
+                let threed_res;
+                try {
+                    threed_res = await fetch('/Payment/3DSecureLookup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cardholder_name: cardholder_name.value,
+                            cardholder_email: cardholder_email.value,
+                            cardholder_address_1: cardholder_address_1.value,
+                            cardholder_locality: cardholder_locality.value,
+                            cardholder_country: cardholder_country.value,
+                            device_info_id,
+                            encrypted_card,
+                            merchant_reference: CHECKOUT_ID
+                        })
+                    });
+                } catch (e) {
+                    stop_loading();
+                    console.error('Error whilst sending request to server:', e);
+                    return set_error('Error while sending request to server, check console...');
+                }
+
+                let threed_json;
+                try {
+                    threed_json = await threed_res.json();
+                } catch (e) {
+                    stop_loading();
+                    console.error('Error whilst JSON stringifying server response:', e);
+                    return set_error('Error whilst JSON stringifying server response, check console...');
+                }
+
+                if (threed_json?.error) {
+                    stop_loading();
+                    console.error('Error from server (' + threed_json.error.code + '): ' + threed_json.error.message);
+                    return set_error(threed_json.error.message);
+                } 
+
+                if (threed_json?.success?.code === "CardholderVerification") {
+                    threeds_auth_value.enrolled = threed_json.data.enrolled;
+                    threeds_auth_value.ds_transaction_id = threed_json.data.ds_transaction_id;
+
+                    return Cardinal.continue("cca",
+                        {
+                            AcsUrl: threed_json.data.acs_url,
+                            Payload: threed_json.data.payload,
+                        },
+                        {
+                            OrderDetails: {
+                                TransactionId: threed_json.data.transaction_id,
+                            },
+                        }
+                    );
+                }
+                
+                if (threed_json?.success?.code === "LiabilityShifted") {
+                    threeds_auth_value = threed_json.data;
+
+                    return await initiate_payment();
+                } 
+
+                stop_loading();
+                console.error('Server response not successful or unsuccessful: ' + threed_json);
+                return set_error('Server response not successful or unsuccessful. Please investigate.');
+            });
+
+            Cardinal.configure({ 
+                timeout: 6000, 
+                maxRequestRetries: 3,
+                logging: {
+                    level: 'verbose'
+                }
+            });
+
+            Cardinal.setup('init', { jwt: THREEDS_JWT });
+
+            Cardinal.on('payments.setupComplete', (setupCompleteData) => {
+                device_info_id = setupCompleteData.sessionId;
+            });
+
+            Cardinal.on('payments.validated', (data, jwt) => {
+                switch (data.ActionCode) {
+                    case "SUCCESS": {
+                        const threed_data = data.Payment.ExtendedData;
+
+                        threeds_auth_value.eci_flag = threed_data.ECIFlag;
+                        threeds_auth_value.cavv = threed_data.CAVV;
+                        threeds_auth_value.pares_status = threed_data.PAResStatus;
+                        threeds_auth_value.threeds_version = threed_data.ThreeDSVersion;
+                        threeds_auth_value.signature_verification = threed_data.SignatureVerification;
+                        threeds_auth_value.error_desc = data.ErrorDescription;
+                        threeds_auth_value.error_no = String(data.ErrorNumber);
+
+                        return initiate_payment();
+                    }
+
+                    default: {
+                        stop_loading();
+                        console.error('Non-successful response from Cardinal: ' + data);
+                        return set_error('Non-successful response from Cardinal, see console.');
+                    }
+                }
+            });
+
+            cardholder_pan.addEventListener("keydown", () => clear_error());
+        </script>
+    </body>
+</html>
